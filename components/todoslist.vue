@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-layout row wrap v-for="td in todos" :key=td.id>
+    <v-layout row wrap>
+      <v-flex xs12 offset-xs1>
+              <p class="display-2" style="text-align: center">Existing Tasks</p>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap v-for="td in my_todos.payload" :key=td.id>
       <v-flex xs12 offset-xs1>
         <v-card>
           <v-card-title primmary-title>
@@ -60,6 +65,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   components: {},
   props: [],
@@ -71,22 +78,20 @@ export default {
     todos: []
   }),
   computed: {
+    my_todos () {
+      return this.$store.state.todos.my_todos;
+    },
     priorities () {
-          return this.$store.state.todos.priorities
-      }
+      return this.$store.state.todos.priorities;
+    }
   },
   methods: {
+    ...mapActions({
+      getToDos: "todos/getToDos"
+    })
   },
   mounted () {
-      for (let i = 1; i < 11; i++) {
-          this.todos.push({
-              id: this.todos.length,
-              description: `test todo ${i}`,
-              date: new Date().toISOString().substr(0, 10),
-              priority: i % 2 === 0 ? 'medium' : 'low'
-          })
-      }
-      console.log(this.todos)
+      this.getToDos();
   }
 };
 </script>
