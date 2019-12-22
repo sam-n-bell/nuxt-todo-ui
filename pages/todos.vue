@@ -1,15 +1,17 @@
 <template>
   <v-container fluid grid-list-md grid-list-xl grid-list-lg>
     <newtodo></newtodo>
+    <todoslist></todoslist>
   </v-container>
 </template>
 
 <script>
 import newtodo from '../components/newtodo.vue'
+import todoslist from '../components/todoslist.vue'
 
 export default {
   components: {
-      newtodo
+      newtodo, todoslist
     },
   data: () => ({
     date_menu: false,
