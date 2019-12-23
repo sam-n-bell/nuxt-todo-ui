@@ -8,6 +8,11 @@ const state = () => ({
         payload: [],
         loading: false,
         error: null
+    },
+    create_todo: {
+        payload: null,
+        loading: false,
+        error: null
     }
 });
 
@@ -45,10 +50,42 @@ const actions = {
         } catch (err) {
             commit("getToDosFailure", err.message)
         }
+    },
+    async createToDo ({commit, dispatch}, todo) {
+        commit("createToDo")
+        try {
+            // uncomment out below code when API works
+            // let response = await this.$axios.post(``, {timeout: 4000})
+            // commit("createToDoSuccess", response)
+            // commit("createToDoSuccess", todo)
+            // code above is for API
+            commit("addDummyToDo", todo)
+        } catch (err) {
+            console.log(err.message);
+            commit("createToDoFailure", err.message)
+        }
     }
 };
 
 const mutations = {
+    addDummyToDo(state, todo) {
+        state.my_todos.payload.push(todo)
+    },
+    createToDo(state) {
+        state.create_todo.payload = null
+        state.create_todo.loading = false
+        state.create_todo.error = null
+    },
+    createToDoSuccess(state, response) {
+        state.create_todo.payload = response
+        state.create_todo.loading = false
+        state.create_todo.error = null
+    },
+    createToDoFailure(state, error) {
+        state.create_todo.payload = null
+        state.create_todo.loading = false
+        state.create_todo.error = error
+    },
     getToDos(state) {
         state.my_todos.payload = []
         state.my_todos.loading = true
