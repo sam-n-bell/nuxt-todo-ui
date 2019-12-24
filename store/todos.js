@@ -13,6 +13,11 @@ const state = () => ({
         payload: null,
         loading: false,
         error: null
+    },
+    delete_todo: {
+        payload: null,
+        loading: false,
+        error: null
     }
 });
 
@@ -64,10 +69,38 @@ const actions = {
             console.log(err.message);
             commit("createToDoFailure", err.message)
         }
+    },
+    async deleteToDo ({commit, dispatch}, todo) {
+        commit("deleteToDo")
     }
 };
 
 const mutations = {
+    deleteToDo(state) {
+        state.delete_todo.payload = null
+        state.delete_todo.loading = true
+        state.delete_todo.error = null
+    },
+    deleteToDoSuccess(state, id) {
+        state.delete_todo.payload = id
+        state.delete_todo.loading = false
+        state.delete_todo.error = null
+    },
+    deleteToDoFailure(state, error) {
+        state.delete_todo.payload = null
+        state.delete_todo.loading = false
+        state.delete_todo.error = error
+    },
+    createToDoSuccess(state, response) {
+        state.create_todo.payload = response
+        state.create_todo.loading = false
+        state.create_todo.error = null
+    },
+    createToDoFailure(state, error) {
+        state.create_todo.payload = null
+        state.create_todo.loading = false
+        state.create_todo.error = error
+    },
     addDummyToDo(state, todo) {
         state.my_todos.payload.push(todo)
     },

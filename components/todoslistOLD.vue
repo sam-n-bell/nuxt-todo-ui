@@ -5,8 +5,7 @@
               <p class="display-2" style="text-align: center">Existing Tasks</p>
       </v-flex>
     </v-layout>
-    <existingtodo v-for="td in my_todos.payload" :key=td.id :todo=td />
-    <!-- <v-layout row wrap v-for="td in my_todos.payload" :key=td.id>
+    <v-layout row wrap v-for="td in my_todos.payload" :key=td.id>
       <v-flex xs12 offset-xs1>
         <v-card>
           <v-card-title primmary-title>
@@ -55,21 +54,21 @@
             </v-layout>
           </v-card-text>
           <v-card-actions>
+            <div>
+            </div>
           </v-card-actions>
         </v-card>
       </v-flex>
-    </v-layout> -->
+    </v-layout>
     <!-- <pre>{{ todos }}</pre> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import existingtodo from './existingtodo.vue'
+
 export default {
-  components: {
-    existingtodo
-  },
+  components: {},
   props: [],
   data: () => ({
     to_do: {
