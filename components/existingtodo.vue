@@ -1,6 +1,5 @@
 <template>
   <div v-if="todo_instance != null">
-    <pre>{{ remove_todo_dialog }}</pre>
     <v-layout row wrap>
       <v-flex xs12 offset-xs1>
         <v-card>
@@ -67,16 +66,16 @@
                       color="error"
                       @click="showRemoveDialog(
                       {
-                        title:'Delete To Do',
-                        body:'You are about to delete a reminder to: \n' + todo_instance.description  + '\n\nAre you sure?',
-                        confirm_btn_text:'Yes. Continue.',
-                        cancel_btn_text:'Nevermind.',
+                        title:'Delete Confirmation',
+                        body:'Delete this reminder? ' + todo_instance.description,
+                        confirm_button_text:'Yes. Continue.',
+                        cancel_button_text:'Nevermind.',
                         confirm_btn_function: () => deleteToDo(todo_instance.id),
                         cacncel_btn_function: () => closeDeleteDialog()
                       }
                       )"
                     >
-                      <v-icon>delete</v-icon>
+                      <v-icon>delete</v-icon> Delete
                     </v-btn>
           </v-card-actions>
         </v-card>

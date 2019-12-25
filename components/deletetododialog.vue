@@ -1,22 +1,40 @@
 <template>
-  <div>
-      <v-dialog v-model="remove_todo_dialog.visisble" persistent width="500">
+<div>
+      <v-dialog v-model="remove_todo_dialog.visible" persistent width="500">
           <v-card>
               <v-card-title primary-title>
                   {{ remove_todo_dialog.title }}
+              </v-card-title>
+              <v-card-text>
+                  <pre>    {{ remove_todo_dialog }}</pre>
+                  {{ remove_todo_dialog.body }}
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                  <v-btn color="error" @click="confirmDelete">{{ remove_todo_dialog.confirm_button_text }}</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" @click="cancelDelete">{{ remove_todo_dialog.cancel_button_text }}</v-btn>
+              </v-card-actions>
+          </v-card>
+      </v-dialog>
+      <v-btn @click="dialog = true">Open</v-btn>
+      <v-dialog v-model="dialog" persistent width="500">
+          <v-card>
+              <v-card-title primary-title>
+                  blah lah blah
               </v-card-title>
               <v-card-text>
                   {{ remove_todo_dialog.body }}
               </v-card-text>
               <v-divider></v-divider>
               <v-card-actions>
-                  <v-btn color="primary" @click="confirmDelete">{{ remove_todo_dialog.confirm_btn_text }}</v-btn>
+                  <!-- <v-btn color="primary" @click="confirmDelete">{{ remove_todo_dialog.confirm_btn_text }}</v-btn> -->
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" @click="cancelDelete">{{ remove_todo_dialog.cancel_btn_text }}</v-btn>
+                  <!-- <v-btn color="primary" @click="cancelDelete">{{ remove_todo_dialog.cancel_btn_text }}</v-btn> -->
               </v-card-actions>
           </v-card>
       </v-dialog>
-  </div>
+</div>
 </template>
 
 <script>
@@ -28,12 +46,15 @@ export default {
   },
   props: [],
   data: () => ({
-    
+    dialog: false
   }),
   computed: {
     remove_todo_dialog () {
         return this.$store.state.notifications.remove_todo_dialog;
     }
+  },
+  watch: {
+      
   },
   methods: {
     confirmDelete () {
@@ -59,6 +80,8 @@ export default {
     })
   },
   mounted () {
+      console.log("dialog mounted")
+    //   this.dialog = true
   }
 };
 </script>
