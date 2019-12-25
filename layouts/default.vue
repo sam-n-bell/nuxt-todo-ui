@@ -85,11 +85,17 @@
     >
       <span>&copy; 2019</span>
     </v-footer>
+    <deletetododialog/>
   </v-app>
 </template>
 
 <script>
+import deletetododialog from '../components/deletetododialog.vue';
+
 export default {
+  components: {
+    deletetododialog
+  },
   data() {
     return {
       clipped: false,

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -32,7 +32,7 @@ export default {
   }),
   computed: {
     remove_todo_dialog () {
-        return this.$store.notifications.remove_todo_dialog;
+        return this.$store.state.notifications.remove_todo_dialog;
     }
   },
   methods: {

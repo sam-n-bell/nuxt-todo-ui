@@ -1,7 +1,6 @@
 <template>
   <div v-if="todo_instance != null">
     <pre>{{ remove_todo_dialog }}</pre>
-    <deletetododialog></deletetododialog>
     <v-layout row wrap>
       <v-flex xs12 offset-xs1>
         <v-card>
@@ -109,7 +108,7 @@ export default {
         return this.$store.state.todos.delete_todo;
     },
     remove_todo_dialog () {
-        return this.$store.notifications.remove_todo_dialog;
+        return this.$store.state.notifications.remove_todo_dialog;
     }
   },
   watch: {
