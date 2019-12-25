@@ -70,21 +70,32 @@ const actions = {
             commit("createToDoFailure", err.message)
         }
     },
-    async deleteToDo ({commit, dispatch}, todo) {
+    async deleteToDo ({commit, dispatch}, id) {
         commit("deleteToDo")
+        try {
+            // const response = await this.$axios.delete(``);
+            commit("deleteToDoSuccess", id)
+        } catch (err) {
+            commit("deleteToDoFailure", err.message)
+        }
     }
 };
 
 const mutations = {
     deleteToDo(state) {
-        state.delete_todo.payload = null
-        state.delete_todo.loading = true
-        state.delete_todo.error = null
+        state.delete_todo.payload = null;
+        state.delete_todo.loading = true;
+        state.delete_todo.error = null;
     },
     deleteToDoSuccess(state, id) {
-        state.delete_todo.payload = id
-        state.delete_todo.loading = false
-        state.delete_todo.error = null
+        state.delete_todo.payload = id;
+        state.delete_todo.loading = false;
+        state.delete_todo.error = null;
+
+        //remove this code when Spring Boot API works
+        console.log(state.my_todos);
+        state.my_todos = state.my_todos.filter(i => i.id !== id);
+        console.log(state.my_todos);
     },
     deleteToDoFailure(state, error) {
         state.delete_todo.payload = null

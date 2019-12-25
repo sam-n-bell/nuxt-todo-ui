@@ -1,5 +1,7 @@
 <template>
   <div v-if="todo_instance != null">
+    <pre>{{ remove_todo_dialog }}</pre>
+    <deletetododialog></deletetododialog>
     <v-layout row wrap>
       <v-flex xs12 offset-xs1>
         <v-card>
@@ -61,7 +63,22 @@
                 <v-btn @click="submit()" color="primary">Submit</v-btn>
                 <v-btn @click="reset()">Reset</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="error" @click="remove()" justify-end>Remove</v-btn>
+                <!-- <v-btn color="error" @click="remove()" justify-end>Remove</v-btn> -->
+                <v-btn
+                      color="error"
+                      @click="showRemoveDialog(
+                      {
+                        title:'Delete To Do',
+                        body:'You are about to delete a reminder to: \n' + todo_instance.description  + '\n\nAre you sure?',
+                        confirm_btn_text:'Yes. Continue.',
+                        cancel_btn_text:'Nevermind.',
+                        confirm_btn_function: () => deleteToDo(todo_instance.id),
+                        cacncel_btn_function: () => closeDeleteDialog()
+                      }
+                      )"
+                    >
+                      <v-icon>delete</v-icon>
+                    </v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -73,9 +90,9 @@
 import { mapActions, mapGetters } from 'vuex';
 import { Validator } from 'vee-validate';
 import _ from 'lodash';
-
+import deletetododialog from './deletetododialog.vue';
 export default {
-  components: {},
+  components: {deletetododialog},
   props: ['todo'],
   data: () => ({
     date_menu: false,
@@ -90,6 +107,9 @@ export default {
     },
     delete_todo_object () {
         return this.$store.state.todos.delete_todo;
+    },
+    remove_todo_dialog () {
+        return this.$store.notifications.remove_todo_dialog;
     }
   },
   watch: {
@@ -103,11 +123,14 @@ export default {
     }
   },
   methods: {
-      reset () {
-          const id = this.todo_instance.id;
-          console.log(this.my_todos)
-          this.todo_instance = _.cloneDeep(_.find(this.my_todos.payload, function(o) { return o.id === id; }));
-            this.$validator.reset();
+    closeDeleteDialog () {
+        this.$store.commit("notifications/hideRemoveDialog");
+    },
+    reset () {
+        const id = this.todo_instance.id;
+        console.log(this.my_todos)
+        this.todo_instance = _.cloneDeep(_.find(this.my_todos.payload, function(o) { return o.id === id; }));
+        this.$validator.reset();
     },
     submit () {
       this.$validator.validateAll().then(res => {
@@ -124,7 +147,8 @@ export default {
 
     },
     ...mapActions({
-        "deleteToDo": "todos/deleteToDo"
+        "deleteToDo": "todos/deleteToDo",
+        "showRemoveDialog": "notifications/showRemoveDialog"
     })
   },
   mounted () {
