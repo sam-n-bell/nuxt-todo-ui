@@ -18,6 +18,11 @@ const state = () => ({
         payload: null,
         loading: false,
         error: null
+    },
+    update_todo: {
+        payload: null,
+        loading: false,
+        error: null
     }
 });
 
@@ -71,12 +76,22 @@ const actions = {
         }
     },
     async deleteToDo ({commit, dispatch}, id) {
+        console.log('this func called')
         commit("deleteToDo")
         try {
             // const response = await this.$axios.delete(``);
             commit("deleteToDoSuccess", id)
         } catch (err) {
+            console.log(err)
             commit("deleteToDoFailure", err.message)
+        }
+    },
+    async updateToDo ({commit, dispatch}, todo) {
+        try {
+
+        } catch (err) {
+            console.log(err);
+
         }
     }
 };
@@ -88,19 +103,41 @@ const mutations = {
         state.delete_todo.error = null;
     },
     deleteToDoSuccess(state, id) {
+        console.log('success ')
         state.delete_todo.payload = id;
         state.delete_todo.loading = false;
         state.delete_todo.error = null;
 
         //remove this code when Spring Boot API works
-        console.log(state.my_todos);
-        state.my_todos = state.my_todos.filter(i => i.id !== id);
-        console.log(state.my_todos);
+        let todos = []
+        state.my_todos.payload.forEach(e => {
+            console.log(e)
+            if (e.id !== id) {
+                todos.push(e)
+            }
+        })
+        state.my_todos.payload = todos;
+        //remove above code
     },
     deleteToDoFailure(state, error) {
         state.delete_todo.payload = null
         state.delete_todo.loading = false
         state.delete_todo.error = error
+    },
+    updateToDo(state) {
+        state.update_todo.payload = null;
+        state.update_todo.loading = true;
+        state.update_todo.error = null;
+    },
+    updateToDoSuccess(state, response) {
+        state.update_todo.payload = response;
+        state.update_todo.loading = false;
+        state.update_todo.error = null;
+    },
+    updateToDoFailure(state, error) {
+        state.update_todo.payload = null
+        state.update_todo.loading = false
+        state.update_todo.error = error
     },
     createToDoSuccess(state, response) {
         state.create_todo.payload = response

@@ -8,6 +8,7 @@
               <h3>Description</h3>
               <br/>
               <pre>{{ todo_instance }}</pre>
+              <pre> {{todo}} </pre>
             </div>
           </v-card-title>
           <v-spacer></v-spacer>
@@ -58,8 +59,8 @@
             </v-layout>
           </v-card-text>
           <v-card-actions>
-                <v-btn @click="submit()" color="primary">Submit</v-btn>
-                <v-btn @click="reset()">Reset</v-btn>
+                <v-btn v-show="!different" @click="submit()" color="primary">Submit</v-btn>
+                <v-btn v-show="!different" @click="reset()">Reset</v-btn>
                 <v-spacer></v-spacer>
                 <!-- <v-btn color="error" @click="remove()" justify-end>Remove</v-btn> -->
                 <v-btn
@@ -70,8 +71,8 @@
                         body:'Delete this reminder? ' + todo_instance.description,
                         confirm_button_text:'Yes. Continue.',
                         cancel_button_text:'Nevermind.',
-                        confirm_btn_function: () => deleteToDo(todo_instance.id),
-                        cacncel_btn_function: () => closeDeleteDialog()
+                        confirm_button_function: () => deleteToDo(todo_instance.id),
+                        cacncel_button_function: () => closeDeleteDialog()
                       }
                       )"
                     >
@@ -89,12 +90,14 @@ import { mapActions, mapGetters } from 'vuex';
 import { Validator } from 'vee-validate';
 import _ from 'lodash';
 import deletetododialog from './deletetododialog.vue';
+
 export default {
   components: {deletetododialog},
   props: ['todo'],
   data: () => ({
     date_menu: false,
-    todo_instance: null
+    todo_instance: null,
+    different: false
   }),
   computed: {
     priorities () {
@@ -111,12 +114,24 @@ export default {
     }
   },
   watch: {
-      delete_todo_object: {
+    delete_todo_object: {
         handler(object) {
             if (object.payload) {
                 console.log('deleted')
             }
       },
+      deep: true
+    },
+    todo_instance: {
+        handler(object) {
+            if (_.isEqual(object, this.todo)) {
+                console.log('are the same');
+                this.different = true;
+            } else {
+                console.log('are not the same');
+                this.different = false;
+            }
+        },
       deep: true
     }
   },

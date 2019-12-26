@@ -6,7 +6,7 @@
                   {{ remove_todo_dialog.title }}
               </v-card-title>
               <v-card-text>
-                  <pre>    {{ remove_todo_dialog }}</pre>
+                  <pre>{{ remove_todo_dialog }}</pre>
                   {{ remove_todo_dialog.body }}
               </v-card-text>
               <v-divider></v-divider>
@@ -41,7 +41,7 @@ export default {
   methods: {
     confirmDelete () {
         try {
-            this.remove_todo_dialog.confirm_btn_function();
+            this.remove_todo_dialog.confirm_button_function();
         } catch (err) {
             console.error(err.message)
         } finally {
@@ -57,9 +57,12 @@ export default {
             this.hideRemoveDialog()
         }
     },
-    ...mapActions({
-        "hideRemoveDialog": "notifications/hideRemoveDialog"
-    })
+    hideRemoveDialog () {
+        this.$store.commit("notifications/hideRemoveDialog")
+    }
+    // ...mapActions({
+    //     // "hideRemoveDialog": "notifications/hideRemoveDialog"
+    // })
   },
   mounted () {
   }
