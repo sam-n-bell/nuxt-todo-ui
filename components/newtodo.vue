@@ -1,7 +1,7 @@
 <template>
     <v-layout row wrap>
       <v-flex xs12 offset-xs1>
-              <form>
+        <form>
         <v-card>
           <v-card-title primmary-title>
             <div>

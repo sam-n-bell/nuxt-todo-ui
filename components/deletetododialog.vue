@@ -59,10 +59,10 @@ export default {
     },
     hideRemoveDialog () {
         this.$store.commit("notifications/hideRemoveDialog")
-    }
-    // ...mapActions({
-    //     // "hideRemoveDialog": "notifications/hideRemoveDialog"
-    // })
+    },
+    ...mapActions({
+        "showSnackBar": "notifications/showSnackBar"
+    })
   },
   mounted () {
   }

@@ -62,16 +62,17 @@
         <nuxt />
       </v-container>
     </v-content>
+    <snackbarnotification/>
     <deletetododialog/>
   </v-app>
 </template>
 
 <script>
 import deletetododialog from '../components/deletetododialog.vue';
-
+import snackbarnotification from '../components/snackbarnotification.vue';
 export default {
   components: {
-    deletetododialog
+    deletetododialog, snackbarnotification
   },
   data() {
     return {

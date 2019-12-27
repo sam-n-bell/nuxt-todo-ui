@@ -76,11 +76,11 @@ const actions = {
         }
     },
     async deleteToDo ({commit, dispatch}, id) {
-        console.log('this func called')
         commit("deleteToDo")
         try {
+            throw Error("This dun work!");
             // const response = await this.$axios.delete(``);
-            commit("deleteToDoSuccess", id)
+            commit("deleteToDoSuccess", id);
         } catch (err) {
             console.log(err)
             commit("deleteToDoFailure", err.message)

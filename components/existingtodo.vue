@@ -7,9 +7,9 @@
           <v-card-title primmary-title>
             <div>
               <h3>Description</h3>
-              <br/>
-              <pre>{{ todo_instance }}</pre>
-              <pre> {{todo}} </pre>
+              <!-- <pre>{{ todo_instance }}</pre>
+              <pre> {{todo}} </pre> -->
+              <pre>{{snackbar_object}}</pre>
             </div>
           </v-card-title>
           <v-spacer></v-spacer>
@@ -113,13 +113,21 @@ export default {
     },
     remove_todo_dialog () {
         return this.$store.state.notifications.remove_todo_dialog;
+    },
+    snackbar_object () {
+        return this.$store.state.notifications.snackbar;
     }
   },
   watch: {
     delete_todo_object: {
         handler(object) {
-            if (object.payload) {
-                console.log('deleted')
+            if (object.error) {
+                this.showSnackBar({
+                    text: `Could\'nt delete task. Reason: ${object.error}`,
+                    color: "error",
+                    close_button_text: "Close",
+                    close_button_function: () => hideSnackBar()
+                });
             }
       },
       deep: true
@@ -147,6 +155,9 @@ export default {
     }
   },
   methods: {
+    hideSnackBar() {
+        this.$store.commit("notifications/hideSnackBar");
+    },
     closeDeleteDialog () {
         this.$store.commit("notifications/hideRemoveDialog");
     },
@@ -173,7 +184,8 @@ export default {
     ...mapActions({
         "deleteToDo": "todos/deleteToDo",
         "showRemoveDialog": "notifications/showRemoveDialog",
-        "updateToDo": "todos/updateToDo"
+        "updateToDo": "todos/updateToDo",
+        "showSnackBar": "notifications/showSnackBar"
     })
   },
   mounted () {
