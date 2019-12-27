@@ -87,9 +87,12 @@ const actions = {
         }
     },
     async updateToDo ({commit, dispatch}, todo) {
+        commit("updateToDo");
         try {
-
+            //const response = await this.$axios.put(``)
+            commit("updateToDoSuccess", todo)
         } catch (err) {
+            commit("updateToDoFailure", err.message);
             console.log(err);
 
         }
@@ -133,6 +136,17 @@ const mutations = {
         state.update_todo.payload = response;
         state.update_todo.loading = false;
         state.update_todo.error = null;
+
+        //delete below code once api works
+        state.my_todos.payload.forEach(td => {
+            console.log(`comparing ${td.id} to ${response.id}`)
+            if (td.id === response.id) {
+                td.description = response.description;
+                td.priority = response.priority;
+                td.date = response.date;
+            }
+        })
+        //delete above code
     },
     updateToDoFailure(state, error) {
         state.update_todo.payload = null

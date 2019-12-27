@@ -2,6 +2,7 @@
   <div v-if="todo_instance != null">
     <v-layout row wrap>
       <v-flex xs12 offset-xs1>
+        <form>
         <v-card>
           <v-card-title primmary-title>
             <div>
@@ -80,6 +81,7 @@
                     </v-btn>
           </v-card-actions>
         </v-card>
+        </form>
       </v-flex>
     </v-layout>
   </div>
@@ -125,14 +127,23 @@ export default {
     todo_instance: {
         handler(object) {
             if (_.isEqual(object, this.todo)) {
-                console.log('are the same');
                 this.different = true;
             } else {
-                console.log('are not the same');
                 this.different = false;
             }
         },
       deep: true
+    },
+    todo: {
+        handler(object) {
+            if (_.isEqual(object, this.todo_instance)) {
+                this.different = true;
+            } else {
+                this.different = false;
+            }
+        },
+        deep: true,
+        immediate: true
     }
   },
   methods: {
@@ -141,18 +152,18 @@ export default {
     },
     reset () {
         const id = this.todo_instance.id;
-        console.log(this.my_todos)
         this.todo_instance = _.cloneDeep(_.find(this.my_todos.payload, function(o) { return o.id === id; }));
         this.$validator.reset();
     },
     submit () {
       this.$validator.validateAll().then(res => {
         if (res) {
-        //   this.createToDo({
-        //     description: this.description,
-        //     priority: this.priority,
-        //     date: this.date
-        //   })
+          this.updateToDo({
+            id: this.todo_instance.id,
+            description: this.todo_instance.description,
+            priority: this.todo_instance.priority,
+            date: this.todo_instance.date
+          })
         }
       })
     },
@@ -161,11 +172,13 @@ export default {
     },
     ...mapActions({
         "deleteToDo": "todos/deleteToDo",
-        "showRemoveDialog": "notifications/showRemoveDialog"
+        "showRemoveDialog": "notifications/showRemoveDialog",
+        "updateToDo": "todos/updateToDo"
     })
   },
   mounted () {
-      this.todo_instance = _.cloneDeep(this.todo)
+      this.todo_instance = _.cloneDeep(this.todo);
+      this.$store.commit("todos/updateToDo");
   }
 };
 </script>
