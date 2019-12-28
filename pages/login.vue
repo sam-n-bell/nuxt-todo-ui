@@ -12,7 +12,7 @@
                                 <v-text-field
                                 v-validate="'required|max:50'"
                                 v-model="username" 
-                                data-vv-as="Username"
+                                data-vv-name="username"
                                 type="text"
                                 :error-messages="errors.collect('username')"
                                 label="Username"
@@ -30,9 +30,9 @@
                                 placeholder="hopefully it's not password!"/>
                             </v-flex>
                         </v-layout>
-                        <v-layout row>
+                        <v-layout row v-if="login_error">
                             <v-flex>
-                                <span class="error--text">Error logging in</span>
+                                <span class="error--text">Error logging in {{login_error}}</span>
                             </v-flex>
                         </v-layout>
                         <v-card-actions>
@@ -40,6 +40,9 @@
                             <v-btn 
                                 color="primary"
                                 block
+                                @click="appLogin"
+                                :disabled="errors.any()"
+                                :loading="login_loading"
                             >
                                 Let Me In
                             </v-btn>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { Validator } from 'vee-validate';
 
 export default {
@@ -66,13 +69,38 @@ export default {
         password: ""
     }),
     computed:{
-
+        login_error () {
+            return this.$store.state.authentication.login_error;
+        },
+        login_loading () {
+            return this.$store.state.authentication.login_loading;
+        },
+         ...mapGetters ({
+            "isUserAuthenticated": "authentication/isUserAuthenticated"
+        })
     },
     watch: {
-
+        isUserAuthenticated (new_value) {
+            if (new_value) {
+                console.log('is authenticated');
+                this.$router.push('/');
+            }
+        }
     },
     methods: {
-
+        appLogin() {
+            this.$validator.validateAll().then(res => {
+                if (res) {
+                    this.login({
+                        username: this.username,
+                        password: this.password
+                    })
+                }
+            })
+        },
+        ...mapActions({
+            login: "authentication/login"
+        })
     }
 }
 </script>
