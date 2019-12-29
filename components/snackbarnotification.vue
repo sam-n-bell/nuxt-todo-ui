@@ -7,15 +7,10 @@
       :color="snackbar_object.color"
     >
      {{ snackbar_object.text }}
-      <!-- <v-btn
-        color="primary"
-        flat
-        @click="closeFunction()"
-      > -->
       <v-btn
         color="primary"
         flat
-        @click="hide()"
+        @click="snackbar_object.close_button_function"
       >
         {{ snackbar_object.close_button_text }}
       </v-btn>
@@ -36,16 +31,6 @@ export default {
 
     }, 
     methods: {
-        hide () {
-          this.$store.commit("notifications/hideSnackBar")
-        },
-        closeFunction () {
-          try {
-            this.snackbar_object.close_button_function();
-          } catch (err) {
-            console.error(err)
-          }
-        }
     },
     mounted () {
 

@@ -126,7 +126,7 @@ export default {
                     text: `Could\'nt delete task. Reason: ${object.error}`,
                     color: "error",
                     close_button_text: "Close",
-                    close_button_function: () => hideSnackBar()
+                    close_button_function: () => this.hideSnackBar()
                 });
             }
       },
