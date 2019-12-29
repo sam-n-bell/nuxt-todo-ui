@@ -29,7 +29,7 @@
       fixed
       app
     >
-      <v-toolbar-side-icon @click="drawer = !drawer" />
+      <!-- <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-btn
         icon
         @click.stop="miniVariant = !miniVariant"
@@ -48,14 +48,18 @@
       >
         <v-icon>remove</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-text="title" /> -->
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>menu</v-icon>
-      </v-btn>
+      <v-menu transition="slide-y-transition" left>
+        <v-avatar slot="activator" color="indigo">
+          <v-icon dark>account_circle</v-icon>
+        </v-avatar>
+        <v-list>
+          <v-list-tile :key="'logout'" @click="logout()">
+            <v-list-tile-title>Logout</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-toolbar>
     <v-content>
       <v-container>
@@ -70,6 +74,8 @@
 <script>
 import deletetododialog from '../components/deletetododialog.vue';
 import snackbarnotification from '../components/snackbarnotification.vue';
+import { mapActions } from 'vuex';
+
 export default {
   components: {
     deletetododialog, snackbarnotification
@@ -101,6 +107,24 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
+  },
+  computed:{
+    user () {
+      return this.$store.state.authentication.user;
+    }
+  },
+  watch: {
+    //replace with jwt when api works
+    user (value) {
+      if (value === null) {
+        this.$router.push('/login')
+      }
+    }
+  },
+  methods: {
+    ...mapActions({
+      logout: "authentication/logout"
+    })
   }
 }
 </script>

@@ -66,12 +66,19 @@ const mutations = {
         state.user=null;
         state.jwt=null;
     },
+    saveJWT (state, jwt) {
+        state.jwt = jwt;
+        // uncomment when api works
+        //let decoded = jsonwebtoken.decode(jwt);
+        //state.user = decoded.details.username;
+    },
     logout (state) {
         state.user=null;
         state.login_error=null;
-        state.login_loading=true;
+        state.login_loading=false;
         state.logout_dialog_visible=false;
         state.jwt=null;
+        
     },
 };
 
