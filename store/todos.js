@@ -78,7 +78,7 @@ const actions = {
     async deleteToDo ({commit, dispatch}, id) {
         commit("deleteToDo")
         try {
-            throw Error("This dun work!");
+            //throw Error("This dun work!");
             // const response = await this.$axios.delete(``);
             commit("deleteToDoSuccess", id);
         } catch (err) {

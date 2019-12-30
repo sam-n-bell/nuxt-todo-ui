@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie';
 import jsonwebtoken from 'jsonwebtoken';
+import constants from '../assets/constants.js';
 
 const qs = require('qs');
 
@@ -13,8 +14,8 @@ const state = () => ({
 
 const getters = {
     isUserAuthenticated (state) {
-        //const token = Cookie.get()
-        return !!state.user;
+        const token = Cookie.get(constants.app_constants.auth_cookie_id)
+        return !!state.user || !!token;
     }
 };
 

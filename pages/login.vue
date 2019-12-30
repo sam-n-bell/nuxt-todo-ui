@@ -57,6 +57,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { Validator } from 'vee-validate';
+import Cookie from 'js-cookie';
+import constants from '../assets/constants.js';
 
 export default {
     // layout changes this page to use a different layout than 'default.vue'
@@ -89,6 +91,7 @@ export default {
     },
     methods: {
         appLogin() {
+            Cookie.set(constants.app_constants.auth_cookie_id, 'testcookieid');
             this.$validator.validateAll().then(res => {
                 if (res) {
                     this.login({

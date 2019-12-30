@@ -13,6 +13,7 @@ export default {
   components: {
       newtodo, todoslist
     },
+  middleware: 'authentication',
   data: () => ({
     date_menu: false,
     priorities: [

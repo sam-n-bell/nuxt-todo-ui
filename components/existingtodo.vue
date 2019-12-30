@@ -6,10 +6,7 @@
         <v-card>
           <v-card-title primmary-title>
             <div>
-              <h3>Description</h3>
-              <!-- <pre>{{ todo_instance }}</pre>
-              <pre> {{todo}} </pre> -->
-              <pre>{{snackbar_object}}</pre>
+              <!-- <h3>Description</h3> -->
             </div>
           </v-card-title>
           <v-spacer></v-spacer>

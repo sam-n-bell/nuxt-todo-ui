@@ -8,8 +8,10 @@
 <script>
 import newtodo from '../components/newtodo.vue'
 import todoslist from '../components/todoslist.vue'
+import constants from '../assets/constants.js';
 
 export default {
+  middleware: 'authentication',
   components: {
       newtodo, todoslist
     },
@@ -31,6 +33,9 @@ export default {
     testFunction(priority) {
       console.log(`picked ${priority} priority`);
     }
+  },
+  mounted () {
+    
   }
 };
 </script>
