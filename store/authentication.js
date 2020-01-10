@@ -20,24 +20,25 @@ const getters = {
 };
 
 const actions = {
-    login( {commit, dispatch}, user) {
+    async login( {commit, dispatch}, user) {
         commit("login");
 
         const config = { headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
         }, timeout: 4000};
 
         try {
-            console.log(qs.stringify(user))
-            //await this.$axios.post(``, qs.stringify(user), config);
+            //console.log(qs.stringify(user))
+            await this.$axios.post(constants.url_constants.login_url, user, config);
             commit("loginSuccess", user);
         } catch (err) {
+            console.log(err)
             commit("loginFailure", err.message)
         }
     },
     logout( {commit, dispatch}, user) {
         try {
-            //await this.$axios.post(``);
+            commit("logout")
         } catch (err) {
             console.log(`Error when logging out: ${err.message}`)
         } finally {
@@ -55,6 +56,7 @@ const mutations = {
         state.jwt=null;
     },
     loginSuccess (state, user) {
+        console.log('successful login for ' + user.username)
         state.login_loading=false;
         state.logout_dialog_visible=false;
         state.login_error=null;
@@ -74,12 +76,12 @@ const mutations = {
         //state.user = decoded.details.username;
     },
     logout (state) {
+        Cookie.remove(constants.app_constants.auth_cookie_id);
         state.user=null;
         state.login_error=null;
         state.login_loading=false;
         state.logout_dialog_visible=false;
         state.jwt=null;
-        
     },
 };
 

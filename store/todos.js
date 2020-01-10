@@ -1,3 +1,5 @@
+import constants from '../assets/constants.js';
+
 const state = () => ({
     priorities: [
         { text: "High", value: "high" },
@@ -31,32 +33,18 @@ const getters = {
 };
 
 const actions = {
-    createToDo ({ commit, dispatch },  todo ) {
-        dispatch('getToDos')
-    },
     async getToDos ({commit, dispatch}) {
         commit("getToDos");
         try {
             //uncomment this block when Spring REST works
-            // let todos = await this.$axios.get(``, { timeout: 5000 });
+            let todos = await this.$axios.get(constants.url_constants.get_my_tasks, { timeout: 5000 });
+            // console.log(todos1);
             // if (todos._embedded && todos._embedded.todoEntities) { //entities are a Spring Boot thing
             //     commit("getToDosSuccess", todos._embedded.todoEntities)
             // } else {
             //     commit("getToDosSuccess", [])
             // }
-
-            //delete below because it's just test junk
-            let todos = []
-            for (let i = 1; i < 4; i++) {
-                todos.push({
-                    id: todos.length,
-                    description: `test todo ${i}`,
-                    date: new Date().toISOString().substr(0, 10),
-                    priority: i % 2 === 0 ? 'medium' : 'low'
-                })
-            }
-            //delete above code
-            commit("getToDosSuccess", todos)
+            commit("getToDosSuccess", todos.data)
         } catch (err) {
             commit("getToDosFailure", err.message)
         }
@@ -65,11 +53,10 @@ const actions = {
         commit("createToDo")
         try {
             // uncomment out below code when API works
-            // let response = await this.$axios.post(``, {timeout: 4000})
-            // commit("createToDoSuccess", response)
-            // commit("createToDoSuccess", todo)
+            let response = await this.$axios.post(constants.url_constants.create_todo, todo, {timeout: 4000})
+            commit("createToDoSuccess", response.data)
             // code above is for API
-            commit("addDummyToDo", todo)
+            // commit("addDummyToDo", todo)
         } catch (err) {
             console.log(err.message);
             commit("createToDoFailure", err.message)
@@ -79,7 +66,7 @@ const actions = {
         commit("deleteToDo")
         try {
             //throw Error("This dun work!");
-            // const response = await this.$axios.delete(``);
+            await this.$axios.delete(`${constants.url_constants.delete_todo}${id}`, { timeout: 5000 });
             commit("deleteToDoSuccess", id);
         } catch (err) {
             console.log(err)
@@ -106,21 +93,9 @@ const mutations = {
         state.delete_todo.error = null;
     },
     deleteToDoSuccess(state, id) {
-        console.log('success ')
         state.delete_todo.payload = id;
         state.delete_todo.loading = false;
         state.delete_todo.error = null;
-
-        //remove this code when Spring Boot API works
-        let todos = []
-        state.my_todos.payload.forEach(e => {
-            console.log(e)
-            if (e.id !== id) {
-                todos.push(e)
-            }
-        })
-        state.my_todos.payload = todos;
-        //remove above code
     },
     deleteToDoFailure(state, error) {
         state.delete_todo.payload = null

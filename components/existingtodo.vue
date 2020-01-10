@@ -5,9 +5,6 @@
         <form>
         <v-card>
           <v-card-title primmary-title>
-            <div>
-              <!-- <h3>Description</h3> -->
-            </div>
           </v-card-title>
           <v-spacer></v-spacer>
           <v-card-text>
@@ -31,7 +28,6 @@
                   :items="priorities"
                 ></v-select>
               </v-flex> 
-
               <v-flex xs6 sm6 md6>
                 <v-menu
                   v-model="date_menu"
@@ -45,13 +41,13 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="todo_instance.date"
+                      v-model="todo_instance.due_date"
                       label="When Should This Be Done?"
                       readonly
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="todo_instance.date" @input="date_menu = false"></v-date-picker>
+                  <v-date-picker v-model="todo_instance.due_date" @input="date_menu = false"></v-date-picker>
                 </v-menu>
               </v-flex> 
             </v-layout>
@@ -67,8 +63,8 @@
                       {
                         title:'Delete Confirmation',
                         body:'Delete this reminder? ' + todo_instance.description,
-                        confirm_button_text:'Yes. Continue.',
-                        cancel_button_text:'Nevermind.',
+                        confirm_button_text:'Yes',
+                        cancel_button_text:'Nevermind',
                         confirm_button_function: () => deleteToDo(todo_instance.id),
                         cacncel_button_function: () => closeDeleteDialog()
                       }
@@ -125,6 +121,8 @@ export default {
                     close_button_text: "Close",
                     close_button_function: () => this.hideSnackBar()
                 });
+            } else if (object.payload !== null) {
+                this.getToDos();
             }
       },
       deep: true
@@ -170,7 +168,7 @@ export default {
             id: this.todo_instance.id,
             description: this.todo_instance.description,
             priority: this.todo_instance.priority,
-            date: this.todo_instance.date
+            due_date: this.todo_instance.due_date
           })
         }
       })
@@ -182,7 +180,8 @@ export default {
         "deleteToDo": "todos/deleteToDo",
         "showRemoveDialog": "notifications/showRemoveDialog",
         "updateToDo": "todos/updateToDo",
-        "showSnackBar": "notifications/showSnackBar"
+        "showSnackBar": "notifications/showSnackBar",
+        "getToDos": "todos/getToDos"
     })
   },
   mounted () {

@@ -49,6 +49,7 @@
                         </v-card-actions>
                     </form>
                 </v-card-text>
+                {{ isUserAuthenticated }}
             </v-card>
         </v-flex>
     </v-layout>
@@ -84,14 +85,13 @@ export default {
     watch: {
         isUserAuthenticated (new_value) {
             if (new_value) {
-                console.log('is authenticated');
                 this.$router.push('/');
             }
         }
     },
     methods: {
         appLogin() {
-            Cookie.set(constants.app_constants.auth_cookie_id, 'testcookieid');
+            // Cookie.set(constants.app_constants.auth_cookie_id, 'testcookieid');
             this.$validator.validateAll().then(res => {
                 if (res) {
                     this.login({
@@ -104,6 +104,11 @@ export default {
         ...mapActions({
             login: "authentication/login"
         })
+    },
+    mounted () {
+        if (this.isUserAuthenticated) {
+            this.$router.push('/');
+        }
     }
 }
 </script>

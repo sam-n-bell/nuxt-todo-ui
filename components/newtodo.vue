@@ -31,7 +31,6 @@
                   :items="priorities"
                 ></v-select>
               </v-flex> 
-
               <v-flex xs6 sm6 md6>
                 <v-menu
                   v-model="date_menu"
@@ -45,13 +44,13 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="date"
+                      v-model="due_date"
                       label="When Should This Be Done?"
                       readonly
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="date" @input="date_menu = false"></v-date-picker>
+                  <v-date-picker v-model="due_date" @input="date_menu = false"></v-date-picker>
                 </v-menu>
               </v-flex> 
             </v-layout>
@@ -88,7 +87,7 @@ export default {
     date_menu: false,
     priority: "low",
     description: "",
-    date: new Date().toISOString().substr(0, 10)
+    due_date: new Date().toISOString().substr(0, 10)
   }),
   computed: {
       priorities () {
@@ -102,9 +101,8 @@ export default {
       create_todo: {
           handler(newObject, oldObject) {
             if (newObject.payload) {
-              console.log('create_todo watcher')
-              console.log(newObject)
-              console.log(oldObject)
+                // console.log('refresh current todos')
+                this.getToDos();
             }
           }, deep: true
       }
@@ -113,7 +111,7 @@ export default {
     reset () {
       this.priority = "low";
       this.description = "";
-      this.date = new Date().toISOString().substr(0, 10)
+      this.due_date = new Date().toISOString().substr(0, 10)
       this.$validator.reset();
     },
     submit () {
@@ -122,13 +120,14 @@ export default {
           this.createToDo({
             description: this.description,
             priority: this.priority,
-            date: this.date
+            due_date: this.due_date
           })
         }
       })
     },
     ...mapActions({
-      createToDo: "todos/createToDo"
+      createToDo: "todos/createToDo",
+      getToDos: "todos/getToDos"
     })
   },
   mounted () {
