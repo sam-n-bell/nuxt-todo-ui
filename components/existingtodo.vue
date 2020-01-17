@@ -53,6 +53,7 @@
             </v-layout>
           </v-card-text>
           <v-card-actions>
+            {{different}}
                 <v-btn v-show="!different" @click="submit()" color="primary">Submit</v-btn>
                 <v-btn v-show="!different" @click="reset()">Reset</v-btn>
                 <v-spacer></v-spacer>
@@ -109,6 +110,9 @@ export default {
     },
     snackbar_object () {
         return this.$store.state.notifications.snackbar;
+    },
+    update_todo_object () {
+      return this.$store.state.todos.update_todo;
     }
   },
   watch: {
@@ -124,6 +128,15 @@ export default {
             } else if (object.payload !== null) {
                 this.getToDos();
             }
+      },
+      deep: true
+    },
+    update_todo_object: {
+      handler(object) {
+        if (object.payload) {
+          console.log('setting to false');
+          this.different = true;
+        }
       },
       deep: true
     },
@@ -147,7 +160,8 @@ export default {
         },
         deep: true,
         immediate: true
-    }
+    },
+
   },
   methods: {
     hideSnackBar() {
