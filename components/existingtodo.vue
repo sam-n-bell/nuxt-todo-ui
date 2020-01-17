@@ -53,11 +53,9 @@
             </v-layout>
           </v-card-text>
           <v-card-actions>
-            {{different}}
-                <v-btn v-show="!different" @click="submit()" color="primary">Submit</v-btn>
-                <v-btn v-show="!different" @click="reset()">Reset</v-btn>
+                <v-btn v-show="different" @click="submit()" color="primary">Submit</v-btn>
+                <v-btn v-show="different" @click="reset()">Reset</v-btn>
                 <v-spacer></v-spacer>
-                <!-- <v-btn color="error" @click="remove()" justify-end>Remove</v-btn> -->
                 <v-btn
                       color="error"
                       @click="showRemoveDialog(
@@ -134,8 +132,7 @@ export default {
     update_todo_object: {
       handler(object) {
         if (object.payload) {
-          console.log('setting to false');
-          this.different = true;
+          this.different = false;
         }
       },
       deep: true
@@ -143,9 +140,9 @@ export default {
     todo_instance: {
         handler(object) {
             if (_.isEqual(object, this.todo)) {
-                this.different = true;
-            } else {
                 this.different = false;
+            } else {
+                this.different = true;
             }
         },
       deep: true
@@ -153,9 +150,9 @@ export default {
     todo: {
         handler(object) {
             if (_.isEqual(object, this.todo_instance)) {
-                this.different = true;
-            } else {
                 this.different = false;
+            } else {
+                this.different = true;
             }
         },
         deep: true,
